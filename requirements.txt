@@ -5,6 +5,6 @@ pillow
 pytesseract
 pdfplumber
 numpy
-pyarrow
-hashlib
+pyarrow==14.0.2
+
 
