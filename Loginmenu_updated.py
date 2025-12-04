@@ -310,4 +310,96 @@ elif st.session_state["page"] == "dashboard":
         else:
             st.info("No expenses added yet.")
     else:
-        st.warning(f"⚠️ Only 'yesudas' user can add money or expenses. Current user: {current_user}")
+        st.info(f"📖 Read-Only Mode - Viewing Yesudas's Account | Logged in as: {current_user}")
+        
+        st.markdown("---")
+        
+        # Display Yesudas's balance (read-only for other users)
+        yesudas_balance = users.get("yesudas", {}).get("balance", 0.0)
+        if yesudas_balance < 0:
+            st.markdown(f"<div class='negative-balance'>Yesudas's Account Balance: ₹{yesudas_balance:.2f}</div>", unsafe_allow_html=True)
+        else:
+            st.metric("Yesudas's Account Balance", f"₹{yesudas_balance:.2f}")
+        
+        st.markdown("---")
+        
+        # Display Yesudas's money added (read-only)
+        st.subheader("Money Added History (Yesudas)")
+        yesudas_money = users.get("yesudas", {}).get("money_added", [])
+        if yesudas_money:
+            df_money = pd.DataFrame(yesudas_money)
+            
+            # Filter by name
+            filter_name = st.selectbox(
+                "Filter by Name",
+                ["All"] + list(df_money["from_user"].unique())
+            )
+            
+            if filter_name != "All":
+                df_money_filtered = df_money[df_money["from_user"] == filter_name]
+            else:
+                df_money_filtered = df_money
+            
+            st.dataframe(df_money_filtered, width='stretch')
+        else:
+            st.info("No money records available.")
+        
+        st.markdown("---")
+        
+        # Display Yesudas's expenses (read-only)
+        st.subheader("Expense Records (Yesudas)")
+        yesudas_expenses = users.get("yesudas", {}).get("expenses", [])
+        if yesudas_expenses:
+            df_expenses = pd.DataFrame(yesudas_expenses)
+            df_expenses["date"] = pd.to_datetime(df_expenses["date"])
+            
+            # Extract month and year
+            df_expenses["month_year"] = df_expenses["date"].dt.strftime("%Y-%m")
+            
+            # Filter options
+            col1, col2 = st.columns(2)
+            with col1:
+                filter_category = st.selectbox(
+                    "Filter by Category",
+                    ["All"] + list(df_expenses["category"].unique())
+                )
+            with col2:
+                filter_month = st.selectbox(
+                    "Filter by Month",
+                    ["All"] + sorted(df_expenses["month_year"].unique(), reverse=True)
+                )
+            
+            # Apply filters
+            df_filtered = df_expenses
+            if filter_category != "All":
+                df_filtered = df_filtered[df_filtered["category"] == filter_category]
+            if filter_month != "All":
+                df_filtered = df_filtered[df_filtered["month_year"] == filter_month]
+            
+            st.dataframe(df_filtered, width='stretch')
+            
+            # Show pie chart by category
+            if len(df_filtered) > 0:
+                st.subheader("Expense Distribution by Category (Yesudas)")
+                category_totals = df_filtered.groupby("category")["amount"].sum()
+                fig_pie = px.pie(
+                    values=category_totals.values,
+                    names=category_totals.index,
+                    title="Expense Distribution by Category"
+                )
+                st.plotly_chart(fig_pie, use_container_width=True)
+            
+            # Show bar chart by month
+            if len(df_expenses) > 0:
+                st.subheader("Monthly Expense Trend (Yesudas)")
+                monthly_totals = df_expenses.groupby("month_year")["amount"].sum().reset_index()
+                fig_bar = px.bar(
+                    monthly_totals,
+                    x="month_year",
+                    y="amount",
+                    title="Monthly Expenses",
+                    labels={"month_year": "Month", "amount": "Amount (₹)"}
+                )
+                st.plotly_chart(fig_bar, use_container_width=True)
+        else:
+            st.info("No expense records available.")
