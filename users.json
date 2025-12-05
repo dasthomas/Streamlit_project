@@ -105,5 +105,11 @@
         "date": "2025-12-04 22:17:22"
       }
     ]
+  },
+  "Eli": {
+    "password": "8d6d4f52ee2db64142fab11d1044eaeb7573b009f7bd404923326bc8c0e7ee06",
+    "balance": 0.0,
+    "money_added": [],
+    "expenses": []
   }
 }

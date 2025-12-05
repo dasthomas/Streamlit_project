@@ -204,7 +204,7 @@ elif st.session_state["page"] == "dashboard":
             else:
                 df_money_filtered = df_money
             
-            st.dataframe(df_money_filtered, width='stretch')
+            st.dataframe(df_money_filtered, use_container_width=True)
         else:
             st.info("No money added yet.")
         
@@ -282,7 +282,7 @@ elif st.session_state["page"] == "dashboard":
             if filter_month != "All":
                 df_filtered = df_filtered[df_filtered["month_year"] == filter_month]
             
-            st.dataframe(df_filtered, width='stretch')
+            st.dataframe(df_filtered, use_container_width=True)
             
             # Show pie chart by category
             if len(df_filtered) > 0:
@@ -340,7 +340,7 @@ elif st.session_state["page"] == "dashboard":
             else:
                 df_money_filtered = df_money
             
-            st.dataframe(df_money_filtered, width='stretch')
+            st.dataframe(df_money_filtered, use_container_width=True)
         else:
             st.info("No money records available.")
         
@@ -376,7 +376,7 @@ elif st.session_state["page"] == "dashboard":
             if filter_month != "All":
                 df_filtered = df_filtered[df_filtered["month_year"] == filter_month]
             
-            st.dataframe(df_filtered, width='stretch')
+            st.dataframe(df_filtered, use_container_width=True)
             
             # Show pie chart by category
             if len(df_filtered) > 0:
