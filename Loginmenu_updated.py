@@ -8,28 +8,127 @@ import plotly.express as px
 
 USER_FILE = "users.json"
 
-# Add mild blue background color
-st.markdown("""
-    <style>
-    body {
-        background-color: #ffffff !important;
-    }
-    .stApp {
-        background-color: #ffffff;
-    }
-    .login-title {
-        text-align: center;
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 8px;
-    }
-    .negative-balance {
-        color: red;
-        font-weight: bold;
-        font-size: 1.2em;
-    }
-    </style>
-""", unsafe_allow_html=True)
+# Get current theme preference from Streamlit config
+try:
+    theme = st.config.get_option("theme.base")
+except:
+    theme = "light"
+
+# Add theme-aware styling for light and dark modes
+if theme == "dark":
+    # Dark theme styles
+    st.markdown("""
+        <style>
+        /* Dark Theme Configuration */
+        .stApp {
+            background-color: #0e1117 !important;
+            color: #e6edf3 !important;
+        }
+        
+        body {
+            background-color: #0e1117 !important;
+            color: #e6edf3 !important;
+        }
+        
+        /* Login title - light text for dark background */
+        .login-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #e6edf3 !important;
+        }
+        
+        /* Negative balance - red text visible on dark background */
+        .negative-balance {
+            color: #ff6b6b !important;
+            font-weight: bold;
+            font-size: 1.2em;
+            background-color: rgba(255, 107, 107, 0.1) !important;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        /* Input fields and text areas */
+        .stTextInput input, .stNumberInput input, .stSelectbox select {
+            background-color: #21262d !important;
+            color: #e6edf3 !important;
+            border: 1px solid #30363d !important;
+        }
+        
+        /* Subheader styling */
+        h2, h3 {
+            color: #e6edf3 !important;
+        }
+        
+        /* Button styling */
+        .stButton button {
+            background-color: #238636 !important;
+            color: #ffffff !important;
+        }
+        
+        .stButton button:hover {
+            background-color: #2ea043 !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+else:
+    # Light theme styles
+    st.markdown("""
+        <style>
+        /* Light Theme Configuration */
+        .stApp {
+            background-color: #ffffff !important;
+            color: #1f2937 !important;
+        }
+        
+        body {
+            background-color: #ffffff !important;
+            color: #1f2937 !important;
+        }
+        
+        /* Login title - dark text for light background */
+        .login-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1f2937 !important;
+        }
+        
+        /* Negative balance - red text visible on light background */
+        .negative-balance {
+            color: #dc3545 !important;
+            font-weight: bold;
+            font-size: 1.2em;
+            background-color: rgba(220, 53, 69, 0.1) !important;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        /* Input fields and text areas */
+        .stTextInput input, .stNumberInput input, .stSelectbox select {
+            background-color: #f3f4f6 !important;
+            color: #1f2937 !important;
+            border: 1px solid #d1d5db !important;
+        }
+        
+        /* Subheader styling */
+        h2, h3 {
+            color: #1f2937 !important;
+        }
+        
+        /* Button styling */
+        .stButton button {
+            background-color: #0066cc !important;
+            color: #ffffff !important;
+        }
+        
+        .stButton button:hover {
+            background-color: #0052a3 !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
 # Page navigation state
 if "page" not in st.session_state:
@@ -145,11 +244,11 @@ elif st.session_state["page"] == "dashboard":
     # Show total balance
     balance = users[current_user].get("balance", 0.0)
     
-    # Show balance with red color if negative
+    # Show balance with proper styling for both themes
     if balance < 0:
         st.markdown(f"<div class='negative-balance'>Total Account Balance: ₹{balance:.2f}</div>", unsafe_allow_html=True)
     else:
-        st.metric("Total Account Balance", f"₹{balance:.2f}")
+        st.markdown(f"<div class='balance-display' style='color: var(--text-color, inherit);'>Total Account Balance: <span style='color: #28a745;'>₹{balance:.2f}</span></div>", unsafe_allow_html=True)
     
     st.markdown("---")
     
@@ -319,7 +418,7 @@ elif st.session_state["page"] == "dashboard":
         if yesudas_balance < 0:
             st.markdown(f"<div class='negative-balance'>Yesudas's Account Balance: ₹{yesudas_balance:.2f}</div>", unsafe_allow_html=True)
         else:
-            st.metric("Yesudas's Account Balance", f"₹{yesudas_balance:.2f}")
+            st.markdown(f"<div class='balance-display' style='color: var(--text-color, inherit);'>Yesudas's Account Balance: <span style='color: #28a745;'>₹{yesudas_balance:.2f}</span></div>", unsafe_allow_html=True)
         
         st.markdown("---")
         

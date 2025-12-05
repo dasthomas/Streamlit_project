@@ -1,0 +1,36 @@
+[theme]
+base = "light"
+# Light theme colors for optimal readability
+primaryColor = "#0066cc"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f3f4f6"
+textColor = "#1f2937"
+font = "sans serif"
+
+[client]
+showSidebarNavigation = true
+showErrorDetails = true
+toolbarMode = "auto"
+
+[logger]
+level = "info"
+
+# ============================================
+# THEME SWITCHING GUIDE
+# ============================================
+# Users can change theme in Streamlit settings:
+# 1. Click the ⚙️ (Settings) icon in the top-right
+# 2. Select "Light" or "Dark" theme
+# 
+# Light Theme:
+#   - Background: White (#ffffff)
+#   - Text: Dark Gray (#1f2937)
+#   - Ideal for: Daytime use, printing
+#
+# Dark Theme:
+#   - Background: Dark (#0e1117)
+#   - Text: Light Gray (#e6edf3)
+#   - Ideal for: Nighttime use, reduced eye strain
+#
+# The application automatically adapts styling
+# to maintain visibility in both themes
