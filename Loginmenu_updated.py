@@ -259,7 +259,7 @@ elif st.session_state["page"] == "dashboard":
         # Dropdown to select who is adding money
         payer_name = st.selectbox(
             "Select Name (Who is adding money)",
-            ["Dass", "Elizabeth", "Ellen"]
+            ["Dass", "Elizabeth", "Ellen","Sonny Sonnet","Helen","Edil","Nancy Margaret","Arul","Minisha","Saison","Joy","Shoban","Trinity","Sharmila","Harini","Nancy","Abi","Cristilla","Jenifer","Stephen","Ebineser","John Charles","Princy","Wilson"]
         )
         
         money_description = st.text_input("Description (e.g., Salary, Gift, Bonus)")
